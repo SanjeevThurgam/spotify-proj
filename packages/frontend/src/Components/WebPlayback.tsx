@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 
 const WebPlayback = (props: any) => {
   // TODO: Phase 1: State hooks
+  const [player, setPlayer] = useState<any>(undefined);
 
   // TODO: Phase 1: Add useEffect to update the player state
   useEffect(() => {
