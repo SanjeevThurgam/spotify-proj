@@ -71,6 +71,24 @@ app.get('/myApi/auth/token', (req, res) => {
 app.get('/myApi/search', (req, res) => {
   console.log('hit search endpoint');
   // TODO: Phase 2: Call the Search API on behalf of the client
+
+  //TODO: Get the search query from the request
+  const searchOptions = {
+    url: `https://api.spotify.com/v1/search?q=${req.query.q}&type=track`,
+    headers: {
+        'Authorization': 'Basic ' + (Buffer.from(spotify_client_id + ':' + spotify_client_secret).toString('base64')),
+        'Content-Type' : 'application/json'
+    },
+  };
+
+  request.get(searchOptions, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      res.redirect('/')
+      res.status(200).send(JSON.parse(body));
+    } else {
+      res.status(response.statusCode).send(error);
+    }
+  });
 });
 
 app.listen(port, () => {
