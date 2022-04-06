@@ -1,1 +1,12 @@
-  // TODO: Phase 1
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const {createProxyMiddleware} = require('http-proxy-middleware');
+
+module.exports = function (app) {
+    app.use(
+        '/myApi/**',
+        createProxyMiddleware({
+            target: 'http://localhost:5001',
+            changeOrigin: true,
+        })
+    );
+};

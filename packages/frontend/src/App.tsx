@@ -9,6 +9,9 @@ export const App = () => {
   useEffect(() => {
     const getToken = async () => {
       // TODO: Phase 2: Implement getToken function
+      axios.get('/myApi/auth/token').then((res) => {
+        setToken(res.data.access_token);
+      });
     };
 
     getToken();
