@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
 // TODO: Phase 1: Define the track object
+const track = {
+  name: "",
+  album: {
+      images: [
+          { url: "" }
+      ]
+  },
+  artists: [
+      { name: "" }
+  ]
+}
 
 const WebPlayback = (props: any) => {
   // TODO: Phase 1: State hooks
   const [player, setPlayer] = useState<any>(undefined);
+  const [is_paused, setPaused] = useState(false);
+  const [is_active, setActive] = useState(false);
+  const [current_track, setTrack] = useState(track);
+
 
   // TODO: Phase 1: Add useEffect to update the player state
   useEffect(() => {
@@ -33,11 +48,63 @@ const WebPlayback = (props: any) => {
         console.log('Device ID has gone offline', device_id);
       });
 
+      player.addListener('player_state_changed', (state: any) => {
+
+        if (!state) {
+            return;
+        }
+    
+        setTrack(state.track_window.current_track);
+        setPaused(state.paused);
+    
+    
+        player.getCurrentState().then((state: any) => {
+            (!state) ? setActive(false): setActive(true)
+        });
+    
+    });
+
       player.connect();
     };
   }, []);
 
-  return <>{/* //TODO: Phase 1 */}</>;
+  return (
+    <>
+        <div className="container">
+            <div className="main-wrapper">
+                <img src={current_track.album.images[0].url}
+                     className="now-playing__cover" alt=""/>
+
+                <div className="now-playing__side">
+                    <div className="now-playing__name">{
+                        current_track.name
+                    }</div>
+
+                    <div className="now-playing__artist">{
+                        current_track.artists[0].name
+                    }</div>
+                    <button className="btn-spotify" onClick={() => {
+                        player.previousTrack();
+                    }}>
+                        &lt;&lt;
+                    </button>
+
+                    <button className="btn-spotify" onClick={() => {
+                        player.togglePlay();
+                    }}>
+                        {is_paused ? "PLAY" : "PAUSE"}
+                    </button>
+
+                    <button className="btn-spotify" onClick={() => {
+                        player.nextTrack();
+                    }}>
+                        &gt;&gt;
+                    </button>
+                </div>
+            </div>
+        </div>
+    </>
+);
 };
 
 export default WebPlayback;
