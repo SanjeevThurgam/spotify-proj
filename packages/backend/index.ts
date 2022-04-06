@@ -28,7 +28,7 @@ app.get('/myApi/auth/login', (req: Request, res: Response) => {
       response_type: "code",
       client_id: spotify_client_id,
       scope: scope,
-      redirect_uri: "http://localhost:3000/auth/callback",
+      redirect_uri: "http://localhost:3000/myApi/auth/callback",
       state: state
   } as any);
 
@@ -43,7 +43,7 @@ app.get('/myApi/auth/callback', (req: Request, res: Response) => {
       url: 'https://accounts.spotify.com/api/token',
       form: {
           code: code,
-          redirect_uri: "http://localhost:3000/auth/callback",
+          redirect_uri: "http://localhost:3000/myApi/auth/callback",
           grant_type: 'authorization_code'
       },
       headers: {
