@@ -73,7 +73,7 @@ app.get('/myApi/search', (req, res) => {
   console.log('hit search endpoint');
   // console.log(req);
   // TODO: Phase 2: Call the Search API on behalf of the client
-  console.log(req.query.searchText);
+  // console.log(req.query.searchText);
   //TODO: Get the search query from the request
   // const searchOptions = {
   //   url: `https://api.spotify.com/v1/search?q=name:${req.query.searchText}&type=track`,
@@ -82,19 +82,31 @@ app.get('/myApi/search', (req, res) => {
   //       'Content-Type' : 'application/json'
   //   },
   // };
+  // console.log(req.query.queryParams);
 
   axios.get("https://api.spotify.com/v1/search", {
     params: {
-      q: {...req.query},
-      type: 'track'
+      q: req.query.queryParams,
+      type: 'track',
+      limit: '5'
     },
     headers: {
       'Authorization': 'Bearer ' + access_token,
       'Content-Type' : 'application/json',
       'Accept': 'application/json'
     }
-  }).then(response => {
-    console.log(response.data)
+  }).then(({ data }) => {
+    // console.log(data)
+    const tracks = data.tracks.items;
+    const result = tracks.map((track: any) => {
+      return {
+        title: track.name,
+        subtitle: track.artists[0].name,
+        imageUrl: track.album.images[0].url,
+      }
+    })
+    res.json(result);
+    // console.log("Respose from spotify");
   })
 
   // request.get(searchOptions, (error, response, body) => {

@@ -16,9 +16,10 @@ const Search = () => {
         // NOT the actual spotify API
         // the node backend will call the spotify API
         console.log('Search Text: ' + searchText);
+        const queryParams = 'name:' + searchText;
         axios
           .get('/myApi/search', {
-            params: { searchText },
+            params: { queryParams },
           })
           .then(({ data }) => {
             console.log('Data', data);
