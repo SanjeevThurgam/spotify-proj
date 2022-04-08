@@ -15,9 +15,19 @@ const Search = () => {
         // TODO: Phase 2: Make the Search API call to our node backend
         // NOT the actual spotify API
         // the node backend will call the spotify API
+        console.log('Search Text: ' + searchText);
+        const queryParams = 'name:' + searchText;
+        axios
+          .get('/myApi/search', {
+            params: { queryParams },
+          })
+          .then(({ data }) => {
+            console.log('Data', data);
+            setSearchResults(data);
+            setLoading(false);
+          });
       }
     };
-
     fetchData();
   }, [searchText]);
 
@@ -28,6 +38,8 @@ const Search = () => {
         placeholder="Search for a song"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           // TODO: Phase 2: Update searchText state
+          setSearchText(e.target.value);
+          console.log(e.target.value);
         }}
       />
       {searchResults && !loading ? (

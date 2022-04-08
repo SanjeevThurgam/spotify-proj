@@ -8,6 +8,7 @@ export interface SearchItemProps {
 }
 
 export const SearchItem = ({ imageUrl, title, subtitle }: SearchItemProps) => {
+  console.log(imageUrl);
   return (
     <Box backgroundColor="blue.100" width={350} p={5} m={5} borderRadius={10}>
       <HStack>
